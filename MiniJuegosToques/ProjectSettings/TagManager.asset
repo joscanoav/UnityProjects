@@ -9,6 +9,8 @@ TagManager:
   - BarraLateralIzquierda
   - Balon
   - SensorDeDerrota
+  - PuntuacionUI
+  - PanelDerrota
   layers:
   - Default
   - TransparentFX
