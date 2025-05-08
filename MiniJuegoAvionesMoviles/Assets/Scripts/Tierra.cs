@@ -4,11 +4,17 @@ public class Tierra : MonoBehaviour
 {
 
     [SerializeField]
+    private GameObject acumulador;
+
+    [SerializeField]
     private GameObject explosiones;
+
     private int valorRR;
     private int i;
+
     [SerializeField]
     private GameObject sonidoExplosion;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -49,7 +55,7 @@ public class Tierra : MonoBehaviour
         }
 
         Destroy(other.gameObject);
-        //Destroy(this.gameObject);
+        acumulador.gameObject.GetComponent<UIController>().MostrarPanelDerrota();
 
     }
 }

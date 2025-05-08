@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player2D : MonoBehaviour
@@ -16,17 +17,39 @@ public class Player2D : MonoBehaviour
     [SerializeField]
     private GameObject[] sonidos;
 
+    private float velocidadDisparo;
+
     private int valorRR;
     private int i;
     private int valorRRMisil;
 
+    [SerializeField]
+    private GameObject acumulador;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        velocidadDisparo = 1.0f;
         valorRRMisil = 0;
         valorRR = 0;
-        InvokeRepeating("Disparar", 0.0f, 1.0f);
+        //InvokeRepeating("Disparar", 0.0f, 1.0f);
+        StartCoroutine(DispararMisil());
 
+    }
+
+
+    IEnumerator DispararMisil()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(velocidadDisparo);
+            velocidadDisparo = velocidadDisparo - 0.005f;
+            if (velocidadDisparo <= 0.3f)
+            {
+                velocidadDisparo = 0.3f;
+            }
+            Disparar();
+        }
     }
 
     public void Disparar()
@@ -80,7 +103,8 @@ public class Player2D : MonoBehaviour
             }
 
             Destroy(other.gameObject);
-            //Destroy(this.gameObject);
+            acumulador.gameObject.GetComponent<UIController>().MostrarPanelDerrota();
+            Destroy(this.gameObject);
         }
     }
 

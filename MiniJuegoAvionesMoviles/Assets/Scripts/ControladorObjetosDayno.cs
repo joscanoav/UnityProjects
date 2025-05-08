@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ControladorObjetosDayno : MonoBehaviour
@@ -7,7 +8,7 @@ public class ControladorObjetosDayno : MonoBehaviour
     [SerializeField]
     private GameObject limiteD;
     [SerializeField]
-    private GameObject [] listadoObjetoDanyo;
+    private GameObject[] listadoObjetoDanyo;
 
     private int[] valorRR;
 
@@ -15,21 +16,42 @@ public class ControladorObjetosDayno : MonoBehaviour
 
     private float posicionXAletoria;
 
+    private float velocidadPosicionamiento;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        velocidadPosicionamiento = 2.0f;
         valorRR = new int[listadoObjetoDanyo.Length];
-        InvokeRepeating("CambiarPosicionAsteroides1", 0.0f, 2.0f);
+        //InvokeRepeating("CambiarPosicionAsteroides1", 0.0f, 2.0f);
+        StartCoroutine(CambioDePosicion());
+    }
+
+    IEnumerator CambioDePosicion()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(velocidadPosicionamiento);
+            velocidadPosicionamiento = velocidadPosicionamiento - 0.01f;
+            if (velocidadPosicionamiento <= 0.5f)
+            {
+                velocidadPosicionamiento = 0.5f;
+            }
+            CambiarPosicionAsteroides1();
+        }
     }
 
     public void CambiarPosicionAsteroides1()
     {
+
         posicionXAletoria = Random.Range(limiteI.gameObject.transform.position.x, limiteD.gameObject.transform.position.x);
 
         listadoAletorio = Random.Range(0, listadoObjetoDanyo.Length);
 
-        listadoObjetoDanyo[listadoAletorio].gameObject.transform.GetChild(valorRR[listadoAletorio]).gameObject.transform.position = new Vector2(posicionXAletoria,limiteI.gameObject.transform.position.y);
-        listadoObjetoDanyo[listadoAletorio].gameObject.transform.GetChild(valorRR[listadoAletorio]).gameObject.GetComponent<Rigidbody2D>().gravityScale=0.2f;
+        listadoObjetoDanyo[listadoAletorio].gameObject.transform.GetChild(valorRR[listadoAletorio]).gameObject.transform.position = new Vector2(posicionXAletoria, limiteI.gameObject.transform.position.y);
+        listadoObjetoDanyo[listadoAletorio].gameObject.transform.GetChild(valorRR[listadoAletorio]).gameObject.GetComponent<Rigidbody2D>().linearVelocity=Vector2.zero;
+        listadoObjetoDanyo[listadoAletorio].gameObject.transform.GetChild(valorRR[listadoAletorio]).gameObject.GetComponent<Rigidbody2D>().gravityScale = 0.2f;
+
 
         valorRR[listadoAletorio]++;
 
@@ -44,6 +66,6 @@ public class ControladorObjetosDayno : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
